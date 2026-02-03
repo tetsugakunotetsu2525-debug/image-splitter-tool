@@ -70,7 +70,7 @@ def resize_to_split_size(img, target_width, target_height):
         bottom = top + new_height
         img_cropped = img.crop((0, top, img.width, bottom))
     
-    result_img = img_cropped.resize((target_width, target_height), Image.Resampling.LANCZOS)
+    result_img = img_cropped.resize((target_width, target_height), Image.Resampling.BILINEAR)
     return result_img
 
 def create_zip(images):
@@ -78,14 +78,14 @@ def create_zip(images):
     with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for i, img in enumerate(images):
             buf = BytesIO()
-            img.save(buf, format='PNG', optimize=True)
-            zipf.writestr(f'{i+1}.png', buf.getvalue())
+            img.save(buf, format='JPEG', quality=90, optimize=True)
+            zipf.writestr(f'{i+1}.jpg', buf.getvalue())
     zip_buffer.seek(0)
     return zip_buffer.getvalue()
 
 def save_image_to_buffer(img):
     buf = BytesIO()
-    img.save(buf, format='PNG', optimize=True)
+    img.save(buf, format='JPEG', quality=90, optimize=True)
     buf.seek(0)
     return buf.getvalue()
 
@@ -247,13 +247,13 @@ with tab2:
         st.write("**個別ダウンロード**")
         col1, col2, col3, col4 = st.columns(4, gap="small")
         with col1:
-            st.download_button("1.png", st.session_state.comp_image_buffers[0], "1.png", "image/png", key="comp_1", use_container_width=True)
+            st.download_button("1.jpg", st.session_state.comp_image_buffers[0], "1.jpg", "image/jpeg", key="comp_1", use_container_width=True)
         with col2:
-            st.download_button("2.png", st.session_state.comp_image_buffers[1], "2.png", "image/png", key="comp_2", use_container_width=True)
+            st.download_button("2.jpg", st.session_state.comp_image_buffers[1], "2.jpg", "image/jpeg", key="comp_2", use_container_width=True)
         with col3:
-            st.download_button("3.png", st.session_state.comp_image_buffers[2], "3.png", "image/png", key="comp_3", use_container_width=True)
+            st.download_button("3.jpg", st.session_state.comp_image_buffers[2], "3.jpg", "image/jpeg", key="comp_3", use_container_width=True)
         with col4:
-            st.download_button("4.png", st.session_state.comp_image_buffers[3], "4.png", "image/png", key="comp_4", use_container_width=True)
+            st.download_button("4.jpg", st.session_state.comp_image_buffers[3], "4.jpg", "image/jpeg", key="comp_4", use_container_width=True)
     
     elif main_files and len(main_files) != 4:
         st.error(f"❌ 4分割済み画像は**ちょうど4枚**必要です（現在{len(main_files)}枚）")
@@ -302,13 +302,13 @@ with tab1:
         st.write("**個別ダウンロード**")
         col1, col2, col3, col4 = st.columns(4, gap="small")
         with col1:
-            st.download_button("1.png", save_image_to_buffer(split_images[0]), "1.png", "image/png", key="split_1", use_container_width=True)
+            st.download_button("1.jpg", save_image_to_buffer(split_images[0]), "1.jpg", "image/jpeg", key="split_1", use_container_width=True)
         with col2:
-            st.download_button("2.png", save_image_to_buffer(split_images[1]), "2.png", "image/png", key="split_2", use_container_width=True)
+            st.download_button("2.jpg", save_image_to_buffer(split_images[1]), "2.jpg", "image/jpeg", key="split_2", use_container_width=True)
         with col3:
-            st.download_button("3.png", save_image_to_buffer(split_images[2]), "3.png", "image/png", key="split_3", use_container_width=True)
+            st.download_button("3.jpg", save_image_to_buffer(split_images[2]), "3.jpg", "image/jpeg", key="split_3", use_container_width=True)
         with col4:
-            st.download_button("4.png", save_image_to_buffer(split_images[3]), "4.png", "image/png", key="split_4", use_container_width=True)
+            st.download_button("4.jpg", save_image_to_buffer(split_images[3]), "4.jpg", "image/jpeg", key="split_4", use_container_width=True)
     else:
         st.info("👆 画像をアップロードしてください")
 
@@ -425,12 +425,12 @@ with tab3:
         st.write("**個別ダウンロード**")
         col1, col2, col3, col4 = st.columns(4, gap="small")
         with col1:
-            st.download_button("1.png", st.session_state.one_image_buffers[0], "1.png", "image/png", key="one_1", use_container_width=True)
+            st.download_button("1.jpg", st.session_state.one_image_buffers[0], "1.jpg", "image/jpeg", key="one_1", use_container_width=True)
         with col2:
-            st.download_button("2.png", st.session_state.one_image_buffers[1], "2.png", "image/png", key="one_2", use_container_width=True)
+            st.download_button("2.jpg", st.session_state.one_image_buffers[1], "2.jpg", "image/jpeg", key="one_2", use_container_width=True)
         with col3:
-            st.download_button("3.png", st.session_state.one_image_buffers[2], "3.png", "image/png", key="one_3", use_container_width=True)
+            st.download_button("3.jpg", st.session_state.one_image_buffers[2], "3.jpg", "image/jpeg", key="one_3", use_container_width=True)
         with col4:
-            st.download_button("4.png", st.session_state.one_image_buffers[3], "4.png", "image/png", key="one_4", use_container_width=True)
+            st.download_button("4.jpg", st.session_state.one_image_buffers[3], "4.jpg", "image/jpeg", key="one_4", use_container_width=True)
     else:
         st.info("👆 メイン画像と上下用画像をアップロードしてください")

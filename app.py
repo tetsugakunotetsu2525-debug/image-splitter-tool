@@ -22,6 +22,10 @@ if 'saved_side_images' not in st.session_state:
 
 tab1, tab2, tab3 = st.tabs(["4分割のみ", "合成", "ワンステップ"])
 
+# 最適化用定数
+OPTIMIZE_SIZE = 1200
+HALF_SIZE = OPTIMIZE_SIZE // 2
+
 def crop_to_16_9(img):
     img_obj = Image.open(BytesIO(img)) if isinstance(img, bytes) else img
     target_ratio = 16 / 9
@@ -38,6 +42,7 @@ def crop_to_16_9(img):
         bottom = top + new_height
         img_cropped = img_obj.crop((0, top, img_obj.width, bottom))
     
+    img_cropped = img_cropped.resize((OPTIMIZE_SIZE, OPTIMIZE_SIZE // 2), Image.Resampling.LANCZOS)
     return img_cropped
 
 def split_4(img_cropped):

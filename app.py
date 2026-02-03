@@ -220,7 +220,7 @@ with tab2:
                 buf.seek(0)
                 st.session_state.comp_image_buffers[i] = buf.getvalue()
         
-        st.subheading("プレビュー")
+        st.subheader("プレビュー")
         col1, col2, col3, col4 = st.columns(4)
         with col1:
             st.image(final_images[0], width=150)

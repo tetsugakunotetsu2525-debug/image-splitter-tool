@@ -78,10 +78,16 @@ def create_zip(images):
     with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for i, img in enumerate(images):
             buf = BytesIO()
-            img.save(buf, format='PNG')
+            img.save(buf, format='PNG', optimize=True)
             zipf.writestr(f'{i+1}.png', buf.getvalue())
     zip_buffer.seek(0)
     return zip_buffer.getvalue()
+
+def save_image_to_buffer(img):
+    buf = BytesIO()
+    img.save(buf, format='PNG', optimize=True)
+    buf.seek(0)
+    return buf.getvalue()
 
 def generate_heights(side_height):
     total_side_height = side_height * 2
@@ -215,10 +221,7 @@ with tab2:
         if 'comp_image_buffers' not in st.session_state:
             st.session_state.comp_image_buffers = {}
             for i, img in enumerate(final_images):
-                buf = BytesIO()
-                img.save(buf, format='PNG')
-                buf.seek(0)
-                st.session_state.comp_image_buffers[i] = buf.getvalue()
+                st.session_state.comp_image_buffers[i] = save_image_to_buffer(img)
         
         st.subheader("プレビュー")
         col1, col2, col3, col4 = st.columns(4)
@@ -301,25 +304,13 @@ with tab1:
         st.write("**個別ダウンロード**")
         col1, col2, col3, col4 = st.columns(4, gap="small")
         with col1:
-            buf = BytesIO()
-            split_images[0].save(buf, format='PNG')
-            buf.seek(0)
-            st.download_button("1.png", buf.getvalue(), "1.png", "image/png", key="split_1", use_container_width=True)
+            st.download_button("1.png", save_image_to_buffer(split_images[0]), "1.png", "image/png", key="split_1", use_container_width=True)
         with col2:
-            buf = BytesIO()
-            split_images[1].save(buf, format='PNG')
-            buf.seek(0)
-            st.download_button("2.png", buf.getvalue(), "2.png", "image/png", key="split_2", use_container_width=True)
+            st.download_button("2.png", save_image_to_buffer(split_images[1]), "2.png", "image/png", key="split_2", use_container_width=True)
         with col3:
-            buf = BytesIO()
-            split_images[2].save(buf, format='PNG')
-            buf.seek(0)
-            st.download_button("3.png", buf.getvalue(), "3.png", "image/png", key="split_3", use_container_width=True)
+            st.download_button("3.png", save_image_to_buffer(split_images[2]), "3.png", "image/png", key="split_3", use_container_width=True)
         with col4:
-            buf = BytesIO()
-            split_images[3].save(buf, format='PNG')
-            buf.seek(0)
-            st.download_button("4.png", buf.getvalue(), "4.png", "image/png", key="split_4", use_container_width=True)
+            st.download_button("4.png", save_image_to_buffer(split_images[3]), "4.png", "image/png", key="split_4", use_container_width=True)
     else:
         st.info("👆 画像をアップロードしてください")
 
@@ -410,10 +401,7 @@ with tab3:
         if 'one_image_buffers' not in st.session_state:
             st.session_state.one_image_buffers = {}
             for i, img in enumerate(final_images):
-                buf = BytesIO()
-                img.save(buf, format='PNG')
-                buf.seek(0)
-                st.session_state.one_image_buffers[i] = buf.getvalue()
+                st.session_state.one_image_buffers[i] = save_image_to_buffer(img)
         
         st.subheader("プレビュー")
         col1, col2, col3, col4 = st.columns(4)

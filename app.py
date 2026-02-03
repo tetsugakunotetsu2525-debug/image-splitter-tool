@@ -192,13 +192,13 @@ with tab2:
             
             h1, h2, h3, h4 = st.session_state.comp_heights[idx]
             
-            top_img1 = resize_to_split_size(shuffled_sides[0].copy(), split_width, h1)
-            top_img2 = resize_to_split_size(shuffled_sides[1].copy(), split_width, h2)
-            bottom_img1 = resize_to_split_size(shuffled_sides[2].copy(), split_width, h3)
-            bottom_img2 = resize_to_split_size(shuffled_sides[3].copy(), split_width, h4)
+            top_img1 = resize_to_split_size(shuffled_sides[0].copy(), split_width * 2, h1)
+            top_img2 = resize_to_split_size(shuffled_sides[1].copy(), split_width * 2, h2)
+            bottom_img1 = resize_to_split_size(shuffled_sides[2].copy(), split_width * 2, h3)
+            bottom_img2 = resize_to_split_size(shuffled_sides[3].copy(), split_width * 2, h4)
             
             total_height = h1 + h2 + split_height + h3 + h4
-            combined = Image.new('RGB', (split_width, total_height))
+            combined = Image.new('RGB', (split_width * 2, total_height))
             
             y_offset = 0
             combined.paste(top_img1, (0, y_offset))
@@ -370,13 +370,13 @@ with tab3:
             
             h1, h2, h3, h4 = st.session_state.one_heights[idx]
             
-            top_img1 = resize_to_split_size(shuffled_sides[0].copy(), split_width, h1)
-            top_img2 = resize_to_split_size(shuffled_sides[1].copy(), split_width, h2)
-            bottom_img1 = resize_to_split_size(shuffled_sides[2].copy(), split_width, h3)
-            bottom_img2 = resize_to_split_size(shuffled_sides[3].copy(), split_width, h4)
+            top_img1 = resize_to_split_size(shuffled_sides[0].copy(), split_width * 2, h1)
+            top_img2 = resize_to_split_size(shuffled_sides[1].copy(), split_width * 2, h2)
+            bottom_img1 = resize_to_split_size(shuffled_sides[2].copy(), split_width * 2, h3)
+            bottom_img2 = resize_to_split_size(shuffled_sides[3].copy(), split_width * 2, h4)
             
             total_height = h1 + h2 + split_height + h3 + h4
-            combined = Image.new('RGB', (split_width, total_height))
+            combined = Image.new('RGB', (split_width * 2, total_height))
             
             y_offset = 0
             combined.paste(top_img1, (0, y_offset))
